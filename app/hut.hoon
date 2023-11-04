@@ -59,17 +59,49 @@
       [(make-auth-redirect:mast eyre-id) state]
     ?+  method.request.req  [(make-400:mast eyre-id) state]
       %'GET'
-
-      :: ...........
-
+        ?:  =('/hut/style' url.request.req)
+          [(make-css-response:mast eyre-id style) state]
+        =/  new-display  (rig:mast routes url.request.req [bol hut-component huts msg-jar joined])
+        :-  (plank:mast eyre-id our.bol "hut" "/display-updates" new-display)
+        state(display new-display, cur-url url.request.req)
     ==
   ::
   ++  handle-client-poke
     |=  json-req=json
     ^-  (quip card _state)
-    
-    :: ...........
-
+    =/  client-poke  (parse:mast json-req)
+    ?~  tags.client-poke  !!
+    ?~  t.tags.client-poke  !!
+    ?+  [i.tags.client-poke i.t.tags.client-poke]  !!
+      [%change %select-gid]
+        =/  selected-option=@t  (~(got by data.client-poke) '/target/value')
+        ?:  =('def' selected-option)  !!
+        =/  u-gid=(unit gid)
+          %+  rush  selected-option
+          ;~(plug fed:ag ;~(pfix cab sym))
+        ?~  u-gid  !!
+        =/  new-component-state  hut-component(cur-gid u.u-gid)
+        =/  new-display=manx  
+          (rig:mast routes cur-url [bol new-component-state huts msg-jar joined])
+        :-  (gust:mast /display-updates display new-display)
+        state(display new-display, hut-component new-component-state)
+      [%click %select-hut]
+        ?~  cur-gid.hut-component  !!
+        =/  selected-hut=hut
+          :-  cur-gid.hut-component
+          ^-  @tas  (~(got by data.client-poke) '/target/textContent')
+        =/  new-component-state  hut-component(cur-hut selected-hut)
+        =/  new-display=manx  
+          (rig:mast routes cur-url [bol new-component-state huts msg-jar joined])
+        :-  (gust:mast /display-updates display new-display)
+        state(display new-display, hut-component new-component-state)
+      [%click %create-hut]
+        ?~  cur-gid.hut-component  !!
+        =/  new-hut=hut
+          :-  cur-gid.hut-component
+          ^-  @tas  (~(got by data.client-poke) '/new-hut-input/value')
+        %-  local-new  new-hut
+    ==
   ::
   ++  local
     |=  act=hut-act
@@ -143,16 +175,16 @@
     ?<  (~(has ju huts) gid.hut name.hut)
     =/  =path
       /(scot %p host.gid.hut)/[name.gid.hut]
-    ::
-    :: here state is being updated with a new hut -> update display
-    ::
-    :-  :~  (fact:io hut-did+vase path /all ~)
+    =:  cur-hut.hut-component  hut
+        huts     (~(put ju huts) gid.hut name.hut)
+        msg-jar  (~(put by msg-jar) hut *msgs)
+        joined   (~(put ju joined) gid.hut our.bol)
         ==
-    %=  state
-      huts     (~(put ju huts) gid.hut name.hut)
-      msg-jar  (~(put by msg-jar) hut *msgs)
-      joined   (~(put ju joined) gid.hut our.bol)
-    ==
+    =/  new-display=manx
+      (rig:mast routes cur-url [bol hut-component huts msg-jar joined])
+    :_  state(display new-display)
+    :-  (fact:io hut-did+vase path /all ~) 
+    (gust:mast /display-updates display new-display)
   ++  local-del
     |=  =hut
     ^-  (quip card _state)
@@ -528,6 +560,8 @@
 ++  on-leave
   |=  =path
   ^-  (quip card _this)
+  ?:  ?=([%display-updates *] path)
+    `this
   ?:  ?=([%all ~] path)
     `this
   ?>  ?=([@ @ ~] path)
