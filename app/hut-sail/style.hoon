@@ -5,11 +5,14 @@ body {
   width: 100vw;
   height: 100vh;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 main {
   height: 100%;
   width: 100%;
-  overflow: scroll;
+  flex-grow: 1;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -31,7 +34,7 @@ button:hover, select:hover, .hut-selector:hover {
 button.active, select.active, .hut-selector:active {
   filter: brightness(1.2);
 }
-input {
+input, textarea {
   border: 1px solid #ccc;
   border-radius: 6px;
   padding: 12px;
@@ -40,6 +43,7 @@ input {
   min-width: 13rem;
 }
 .top-bar {
+  height: 2.5rem;
   padding: 1rem;
   margin: 1rem;
   border: 1px solid #ccc;
@@ -56,6 +60,8 @@ input {
   color: #626160;
 }
 .huts-menu {
+  box-sizing: border-box;
+  height: 95%;
   padding-inline: 1rem;
   padding-block: 2rem;
   margin-left: 1rem;
@@ -87,5 +93,47 @@ input {
   background-color: #4eae75;
   color: white;
   cursor: default;
+}
+.content {
+  box-sizing: border-box;
+  height: 95%;
+  padding-inline: 1rem;
+  padding-bottom: 1rem;
+  padding-top: 0;
+  margin-inline: 1rem;
+  border: 1px solid #ccc;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+.msgs {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding-inline: 1rem;
+  padding-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  overflow: scroll;
+}
+.msg {
+  width: 55%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.chat {
+  width: 100%;
+  padding-top: 1rem;
+  border-top: 1px solid #ccc;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 '''

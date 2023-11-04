@@ -17,6 +17,8 @@
           ;div.huts-menu: Select a Squad
         %^  huts-component  our.bol  cur-gid.hut-component
           [cur-hut.hut-component ~(tap in (~(get ju huts) cur-gid.hut-component))]
+      ;+  ?~  cur-hut.hut-component  ;div.content;
+        %-  messages-component  (~(get ja msg-jar) cur-hut.hut-component)
     ==
   ==
 ==
@@ -66,6 +68,27 @@
           =data-return  "/target/textContent"
           ;+  ;/  (trip hut-name)
         ==
+    ==
+  ==
+::
+++  messages-component
+  |=  =msgs
+  ;div.content
+    ;div.msgs
+      ;*  %+  turn  msgs
+        |=  =msg
+        ;div.msg
+          ;+  ;/  <who.msg>
+          ;+  ;/  (trip what.msg)
+        ==
+    ==
+    ;div.chat
+      ;textarea#chat-input;
+      ;button
+        =data-event  "/click/send-message"
+        =data-return  "/chat-input/value"
+        ;+  ;/  "Send"
+      ==
     ==
   ==
 ::

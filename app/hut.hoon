@@ -101,6 +101,12 @@
           :-  cur-gid.hut-component
           ^-  @tas  (~(got by data.client-poke) '/new-hut-input/value')
         %-  local-new  new-hut
+      [%click %send-message]
+        ?~  cur-gid.hut-component  !!
+        ?~  cur-hut.hut-component  !!
+        ?>  =(cur-gid.hut-component gid.cur-hut.hut-component)
+        =/  msg-txt=@t  (~(got by data.client-poke) '/chat-input/value')
+        %+  local-post  [our.bol msg-txt]  cur-hut.hut-component
     ==
   ::
   ++  local
@@ -128,12 +134,12 @@
       ?.  (lte 50 (lent msgs))
         [msg msgs]
       [msg (snip msgs)]
-    ::
-    :: state is being updated here with a new message -> update display
-    ::
-    :_  state(msg-jar (~(put by msg-jar) hut msgs))
-    :~  (fact:io hut-did+vase path /all ~)
-    ==
+    =.  msg-jar  (~(put by msg-jar) hut msgs)
+    =/  new-display=manx
+      (rig:mast routes cur-url [bol hut-component huts msg-jar joined])
+    :_  state(display new-display)
+    :-  (fact:io hut-did+vase path /all ~)
+    (gust:mast /display-updates display new-display)
   ++  local-join
     |=  =gid
     ^-  (quip card _state)
