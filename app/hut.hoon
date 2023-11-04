@@ -80,7 +80,7 @@
           %+  rush  selected-option
           ;~(plug fed:ag ;~(pfix cab sym))
         ?~  u-gid  !!
-        =/  new-component-state  hut-component(cur-gid u.u-gid)
+        =/  new-component-state  hut-component(cur-gid u.u-gid, cur-hut ~)
         =/  new-display=manx  
           (rig:mast routes cur-url [bol new-component-state huts msg-jar joined])
         :-  (gust:mast /display-updates display new-display)
@@ -132,8 +132,8 @@
     =/  =msgs  (~(get ja msg-jar) hut)
     =.  msgs
       ?.  (lte 50 (lent msgs))
-        [msg msgs]
-      [msg (snip msgs)]
+        (snoc msgs msg)
+      (snoc (snip msgs) msg)
     =.  msg-jar  (~(put by msg-jar) hut msgs)
     =/  new-display=manx
       (rig:mast routes cur-url [bol hut-component huts msg-jar joined])

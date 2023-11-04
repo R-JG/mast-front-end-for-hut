@@ -60,7 +60,7 @@
         |=  hut-name=@tas
         ^-  manx
         ?~  hut-name  ;div;
-        ?:  =(+.cur-hut hut-name)  
+        ?:  &(?!(=(~ cur-hut)) =(+.cur-hut hut-name))
           ;div(class "hut-selector selected"): {(trip hut-name)}
         ;div
           =class  "hut-selector"
