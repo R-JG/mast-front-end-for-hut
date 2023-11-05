@@ -61,6 +61,13 @@ textarea {
   margin-right: 40vw;
   color: #626160;
 }
+.no-squad-heading {
+  font-weight: 600;
+  font-size: 1.5rem;
+  margin-top: 0;
+  margin-inline: 2rem;
+  color: #626160;
+}
 .huts-menu {
   box-sizing: border-box;
   height: 95%;

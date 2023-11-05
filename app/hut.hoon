@@ -315,9 +315,6 @@
         =:  huts    (~(gas ju huts) (turn gid-to-add |=(=gid [gid %$])))
             joined  (~(gas by joined) (turn gid-to-add |=(=gid [gid (~(get ju members.upd) gid)])))
             ==
-        ::
-        :: various parts of state are being updated here -> update display
-        ::
         [cards this(huts huts, msg-jar msg-jar, joined joined)]
       ::
       :: adding init for new squad updates:
@@ -325,30 +322,37 @@
         =:  huts    (~(put ju huts) gid.upd %$)
             joined  (~(gas ju joined) (turn ~(tap in ppl.upd) |=(patp=@p [gid.upd patp])))
             ==
-        [~ this(huts huts, joined joined)]
+        =/  new-display=manx
+          (rig:mast routes cur-url [bol hut-component huts msg-jar joined])
+        :_  this(display new-display)
+        (gust:mast /display-updates display new-display)
       ::
           %del
         =/  =path  /(scot %p host.gid.upd)/[name.gid.upd]
         =/  to-rm=(list hut)
           %+  turn  ~(tap in (~(get ju huts) gid.upd))
           |=(=name `hut`[gid.upd name])
-        =.  msg-jar
-          |-
-          ?~  to-rm  msg-jar
-          $(to-rm t.to-rm, msg-jar (~(del by msg-jar) i.to-rm))
-        ::
-        :: here state is being updated after a squad has been deleted -> update display 
-        ::
-        :_  %=  this
-              huts     (~(del by huts) gid.upd)
-              msg-jar  msg-jar
-              joined   (~(del by joined) gid.upd)
+        =:  msg-jar
+              |-
+              ?~  to-rm  msg-jar
+              $(to-rm t.to-rm, msg-jar (~(del by msg-jar) i.to-rm))
+            huts     (~(del by huts) gid.upd)
+            joined   (~(del by joined) gid.upd)
+            cur-gid.hut-component  ?:(=(gid.upd cur-gid.hut-component) ~ cur-gid.hut-component)
+            cur-hut.hut-component  
+              ?:  &(?!(=(~ cur-hut.hut-component)) =(gid.upd -.cur-hut.hut-component)) 
+                ~ 
+              cur-hut.hut-component
             ==
+        =/  new-display=manx
+          (rig:mast routes cur-url [bol hut-component huts msg-jar joined])
+        :_  this(display new-display)
         :+  (kick:io path ~)
           (fact:io hut-did+!>(`hut-upd`[%quit gid.upd our.bol]) /all ~)
-        ?:  =(our.bol host.gid.upd)
-          ~
-        ~[(~(leave-path pass:io path) [host.gid.upd %tally] path)]
+        ?.  =(our.bol host.gid.upd)
+          :-  [(~(leave-path pass:io path) [host.gid.upd %tally] path)]
+          (gust:mast /display-updates display new-display)
+        (gust:mast /display-updates display new-display)
       ::
           %kick
         =/  =path  /(scot %p host.gid.upd)/[name.gid.upd]

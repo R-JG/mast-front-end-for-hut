@@ -12,7 +12,10 @@
     ;+  %+  select-gid-component 
       ~(tap in ~(key by huts)) 
       cur-gid.hut-component
-    ;+  ?~  cur-gid.hut-component  ;main: Select a Squad
+    ;+  ?~  cur-gid.hut-component  
+        ;main
+          ;h1.no-squad-heading: Select a Squad
+        ==
       ;main
         ;+  %^  huts-component  our.bol  cur-gid.hut-component
           [cur-hut.hut-component ~(tap in (~(get ju huts) cur-gid.hut-component))]
