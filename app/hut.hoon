@@ -107,6 +107,12 @@
         ?>  =(cur-gid.hut-component gid.cur-hut.hut-component)
         =/  msg-txt=@t  (~(got by data.client-poke) '/chat-input/value')
         %+  local-post  [our.bol msg-txt]  cur-hut.hut-component
+      [%click %delete-hut]
+        ?~  cur-hut.hut-component  !!
+        %-  local-del  cur-hut.hut-component
+      [%click %leave-squad]
+        ?~  cur-gid.hut-component  !!
+        %-  local-quit  cur-gid.hut-component
     ==
   ::
   ++  local
@@ -157,22 +163,23 @@
     =/  to-rm=(list hut)
       %+  turn  ~(tap in (~(get ju huts) gid))
       |=(=name `hut`[gid name])
-    =.  msg-jar
-      |-
-      ?~  to-rm  msg-jar
-      $(to-rm t.to-rm, msg-jar (~(del by msg-jar) i.to-rm))
-    ::
-    :: state is being updated here on removal of messages and huts for a squad -> update display
-    ::
-    :-  :-  (fact:io hut-did+vase /all ~)
-        ?:  =(our.bol host.gid)
-          ~
-        ~[(~(leave-path pass:io path) [host.gid %hut] path)]
-    %=  state
-      huts     (~(del by huts) gid)
-      msg-jar  msg-jar
-      joined   (~(del by joined) gid)
-    ==
+    =:  msg-jar
+          |-
+          ?~  to-rm  msg-jar
+          $(to-rm t.to-rm, msg-jar (~(del by msg-jar) i.to-rm))
+        huts  (~(del by huts) gid)
+        joined  (~(del by joined) gid)
+        cur-gid.hut-component  ~
+        cur-hut.hut-component  ~
+        ==
+    =/  new-display=manx
+      (rig:mast routes cur-url [bol hut-component huts msg-jar joined])
+    :_  state(display new-display)
+    :-  (fact:io hut-did+vase /all ~)
+    ?.  =(our.bol host.gid)
+      :-  [(~(leave-path pass:io path) [host.gid %hut] path)]
+      (gust:mast /display-updates display new-display)
+    (gust:mast /display-updates display new-display)
   ++  local-new
     |=  =hut
     ^-  (quip card _state)
@@ -197,15 +204,15 @@
     ?>  =(our.bol host.gid.hut)
     =/  =path
       /(scot %p host.gid.hut)/[name.gid.hut]
-    ::
-    :: here state is being updated to delete a hut -> update display
-    ::
-    :-  :~  (fact:io hut-did+vase path /all ~)
+    =:  huts  (~(del ju huts) gid.hut name.hut)
+        msg-jar  (~(del by msg-jar) hut)
+        cur-hut.hut-component  ~
         ==
-    %=  state
-      huts     (~(del ju huts) gid.hut name.hut)
-      msg-jar  (~(del by msg-jar) hut)
-    ==
+    =/  new-display=manx
+      (rig:mast routes cur-url [bol hut-component huts msg-jar joined])
+    :_  state(display new-display)
+    :-  (fact:io hut-did+vase path /all ~)
+    (gust:mast /display-updates display new-display)
   ::
   ++  remote
     |=  act=hut-act

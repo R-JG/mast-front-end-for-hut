@@ -40,7 +40,9 @@ input, textarea {
   padding: 12px;
   font-size: 12px;
   font-weight: 600;
-  min-width: 13rem;
+}
+textarea {
+  min-width: 20rem;
 }
 .top-bar {
   height: 2.5rem;
@@ -62,6 +64,7 @@ input, textarea {
 .huts-menu {
   box-sizing: border-box;
   height: 95%;
+  min-width: 22rem;
   padding-inline: 1rem;
   padding-block: 2rem;
   margin-left: 1rem;
@@ -71,7 +74,14 @@ input, textarea {
   justify-content: flex-start;
   align-items: flex-start;
 }
-.huts-heading {
+.hut-form {
+  margin-bottom: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-content: flex-start;
+}
+.section-heading {
   font-weight: 600;
   font-size: 1rem;
   margin-top: 0;
@@ -121,11 +131,10 @@ input, textarea {
   overflow: scroll;
 }
 .msg {
-  width: 55%;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-block: 0.5rem;
 }
 .chat {
   width: 100%;
@@ -135,5 +144,14 @@ input, textarea {
   flex-direction: row;
   justify-content: center;
   align-items: center;
+}
+.people {
+  min-width: 7rem;
+  margin-right: 1rem;
+}
+.red-button {
+  margin-inline: 0;
+  margin-bottom: 2rem;
+  background-color: #ff4136;
 }
 '''

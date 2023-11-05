@@ -12,14 +12,15 @@
     ;+  %+  select-gid-component 
       ~(tap in ~(key by huts)) 
       cur-gid.hut-component
-    ;main
-      ;+  ?~  cur-gid.hut-component  
-          ;div.huts-menu: Select a Squad
-        %^  huts-component  our.bol  cur-gid.hut-component
+    ;+  ?~  cur-gid.hut-component  ;main: Select a Squad
+      ;main
+        ;+  %^  huts-component  our.bol  cur-gid.hut-component
           [cur-hut.hut-component ~(tap in (~(get ju huts) cur-gid.hut-component))]
-      ;+  ?~  cur-hut.hut-component  ;div.content;
-        %-  messages-component  (~(get ja msg-jar) cur-hut.hut-component)
-    ==
+        ;+  ?~  cur-hut.hut-component  ;div.content;
+          %-  messages-component  (~(get ja msg-jar) cur-hut.hut-component)
+        ;+  %^  people-component  our.bol  cur-gid.hut-component
+          [cur-hut.hut-component ~(tap in (~(get ju joined) cur-gid.hut-component))]
+      ==
   ==
 ==
 ::
@@ -41,12 +42,12 @@
   ==
 ::
 ++  huts-component
-  |=  [our=@p sel-gid=gid [=cur-hut hut-list=(list @tas)]]
+  |=  [our=@p sel-gid=gid =cur-hut hut-list=(list @tas)]
   ^-  manx
   ;div.huts-menu
-    ;h2.huts-heading: Chats
-    ;+  ?.  =(-.sel-gid our)  ;div;
-      ;div
+    ;h2.section-heading: Huts
+    ;+  ?.  =(our host.sel-gid)  ;div;
+      ;div.hut-form
         ;input#new-hut-input;
         ;button
           =data-event  "/click/create-hut"
@@ -89,6 +90,29 @@
         =data-return  "/chat-input/value"
         ;+  ;/  "Send"
       ==
+    ==
+  ==
+::
+++  people-component
+  |=  [our=@p sel-gid=gid =cur-hut gid-members=(list @p)]
+  ;div.people
+    ;+  ?:  =(our host.sel-gid)
+        ?~  cur-hut  ;div;
+        ;button
+          =class  "red-button"
+          =data-event  "/click/delete-hut"
+          ;+  ;/  "Delete Hut"
+        ==
+      ;button
+        =class  "red-button"
+        =data-event  "/click/leave-squad"
+        ;+  ;/  "Leave Squad"
+      ==
+    ;h3.section-heading: Members
+    ;div.member-list
+      ;*  %+  turn  gid-members
+        |=  patp=@p
+        ;div: {<patp>}
     ==
   ==
 ::
