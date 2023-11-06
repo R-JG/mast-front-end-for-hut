@@ -51,7 +51,7 @@
     ;h2.section-heading: Huts
     ;+  ?.  =(our host.sel-gid)  ;div;
       ;div.hut-form
-        ;input#new-hut-input;
+        ;input#new-hut-input(data-reset <input-reset-switch.hut-component>);
         ;button
           =data-event  "/click/create-hut"
           =data-return  "/new-hut-input/value"
@@ -87,7 +87,7 @@
         ==
     ==
     ;div.chat
-      ;textarea#chat-input;
+      ;textarea#chat-input(data-reset <input-reset-switch.hut-component>);
       ;button
         =data-event  "/click/send-message"
         =data-return  "/chat-input/value"

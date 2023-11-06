@@ -140,7 +140,9 @@
       ?.  (lte 50 (lent msgs))
         (snoc msgs msg)
       (snoc (snip msgs) msg)
-    =.  msg-jar  (~(put by msg-jar) hut msgs)
+    =:  msg-jar  (~(put by msg-jar) hut msgs)
+        input-reset-switch.hut-component  !input-reset-switch.hut-component
+        ==
     =/  new-display=manx
       (rig:mast routes cur-url [bol hut-component huts msg-jar joined])
     :_  state(display new-display)
@@ -189,6 +191,7 @@
     =/  =path
       /(scot %p host.gid.hut)/[name.gid.hut]
     =:  cur-hut.hut-component  hut
+        input-reset-switch.hut-component  !input-reset-switch.hut-component
         huts     (~(put ju huts) gid.hut name.hut)
         msg-jar  (~(put by msg-jar) hut *msgs)
         joined   (~(put ju joined) gid.hut our.bol)

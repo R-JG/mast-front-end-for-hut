@@ -25,5 +25,6 @@
 +$  display  $~([[%html ~] [[%head ~] ~] [[%body ~] ~] ~] manx)
 +$  cur-gid  ?(gid ~)
 +$  cur-hut  ?(hut ~)
-+$  hut-component  [=cur-gid =cur-hut]
++$  input-reset-switch  ?
++$  hut-component  [=cur-gid =cur-hut =input-reset-switch]
 --

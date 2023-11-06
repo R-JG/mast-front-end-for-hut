@@ -135,7 +135,7 @@ textarea {
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-start;
-  overflow: scroll;
+  overflow-y: auto;
 }
 .msg {
   display: flex;
