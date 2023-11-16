@@ -33,8 +33,8 @@
   =/  cur-gid-str=tape  ?~(cur-gid "" (make-gid-str cur-gid))
   ;div.top-bar
     ;select
-      =data-event  "/change/select-gid"
-      =data-return  "/target/value"
+      =event  "/change/select-gid"
+      =return  "/target/value"
       ;option(value "def"): Squads
       ;*  %+  turn  gids
         |=  =gid
@@ -51,10 +51,10 @@
     ;h2.section-heading: Huts
     ;+  ?.  =(our host.sel-gid)  ;div;
       ;div.hut-form
-        ;input#new-hut-input(data-reset <input-reset-switch.hut-component>);
+        ;input#new-hut-input(reset <input-reset-switch.hut-component>);
         ;button
-          =data-event  "/click/create-hut"
-          =data-return  "/new-hut-input/value"
+          =event  "/click/create-hut"
+          =return  "/new-hut-input/value"
           =placeholder  "New Hut"
           ;+  ;/  "Create Hut"
         ==
@@ -68,8 +68,8 @@
           ;div(class "hut-selector selected"): {(trip hut-name)}
         ;div
           =class  "hut-selector"
-          =data-event  "/click/select-hut"
-          =data-return  "/target/textContent"
+          =event  "/click/select-hut"
+          =return  "/target/textContent"
           ;+  ;/  (trip hut-name)
         ==
     ==
@@ -87,10 +87,10 @@
         ==
     ==
     ;div.chat
-      ;textarea#chat-input(data-reset <input-reset-switch.hut-component>);
+      ;textarea#chat-input(reset <input-reset-switch.hut-component>);
       ;button
-        =data-event  "/click/send-message"
-        =data-return  "/chat-input/value"
+        =event  "/click/send-message"
+        =return  "/chat-input/value"
         ;+  ;/  "Send"
       ==
     ==
@@ -103,12 +103,12 @@
         ?~  cur-hut  ;div;
         ;button
           =class  "red-button"
-          =data-event  "/click/delete-hut"
+          =event  "/click/delete-hut"
           ;+  ;/  "Delete Hut"
         ==
       ;button
         =class  "red-button"
-        =data-event  "/click/leave-squad"
+        =event  "/click/leave-squad"
         ;+  ;/  "Leave Squad"
       ==
     ;h3.section-heading: Members

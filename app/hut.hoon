@@ -83,7 +83,7 @@
         =/  new-component-state  hut-component(cur-gid u.u-gid, cur-hut ~)
         =/  new-display=manx  
           (rig:mast routes cur-url [bol new-component-state huts msg-jar joined])
-        :-  (gust:mast /display-updates display new-display)
+        :-  [(gust:mast /display-updates display new-display) ~]
         state(display new-display, hut-component new-component-state)
       [%click %select-hut]
         ?~  cur-gid.hut-component  !!
@@ -93,7 +93,7 @@
         =/  new-component-state  hut-component(cur-hut selected-hut)
         =/  new-display=manx  
           (rig:mast routes cur-url [bol new-component-state huts msg-jar joined])
-        :-  (gust:mast /display-updates display new-display)
+        :-  [(gust:mast /display-updates display new-display) ~]
         state(display new-display, hut-component new-component-state)
       [%click %create-hut]
         ?~  cur-gid.hut-component  !!
@@ -138,8 +138,8 @@
     =/  =msgs  (~(get ja msg-jar) hut)
     =.  msgs
       ?.  (lte 50 (lent msgs))
-        (snoc msgs msg)
-      (snoc (snip msgs) msg)
+            [msg msgs]
+        [msg (snip msgs)]
     =:  msg-jar  (~(put by msg-jar) hut msgs)
         input-reset-switch.hut-component  !input-reset-switch.hut-component
         ==
@@ -147,7 +147,7 @@
       (rig:mast routes cur-url [bol hut-component huts msg-jar joined])
     :_  state(display new-display)
     :-  (fact:io hut-did+vase path /all ~)
-    (gust:mast /display-updates display new-display)
+    [(gust:mast /display-updates display new-display) ~]
   ++  local-join
     |=  =gid
     ^-  (quip card _state)
@@ -177,11 +177,9 @@
     =/  new-display=manx
       (rig:mast routes cur-url [bol hut-component huts msg-jar joined])
     :_  state(display new-display)
-    :-  (fact:io hut-did+vase /all ~)
-    ?.  =(our.bol host.gid)
-      :-  [(~(leave-path pass:io path) [host.gid %hut] path)]
-      (gust:mast /display-updates display new-display)
-    (gust:mast /display-updates display new-display)
+    :+  (gust:mast /display-updates display new-display)
+      (fact:io hut-did+vase /all ~)
+    ?.(=(our.bol host.gid) [[(~(leave-path pass:io path) [host.gid %hut] path)] ~] ~)
   ++  local-new
     |=  =hut
     ^-  (quip card _state)
@@ -199,8 +197,9 @@
     =/  new-display=manx
       (rig:mast routes cur-url [bol hut-component huts msg-jar joined])
     :_  state(display new-display)
-    :-  (fact:io hut-did+vase path /all ~) 
-    (gust:mast /display-updates display new-display)
+    :~  (gust:mast /display-updates display new-display)
+        (fact:io hut-did+vase path /all ~)
+    ==
   ++  local-del
     |=  =hut
     ^-  (quip card _state)
@@ -214,8 +213,9 @@
     =/  new-display=manx
       (rig:mast routes cur-url [bol hut-component huts msg-jar joined])
     :_  state(display new-display)
-    :-  (fact:io hut-did+vase path /all ~)
-    (gust:mast /display-updates display new-display)
+    :~  (gust:mast /display-updates display new-display)
+        (fact:io hut-did+vase path /all ~)
+    ==
   ::
   ++  remote
     |=  act=hut-act
@@ -328,7 +328,7 @@
         =/  new-display=manx
           (rig:mast routes cur-url [bol hut-component huts msg-jar joined])
         :_  this(display new-display)
-        (gust:mast /display-updates display new-display)
+        [(gust:mast /display-updates display new-display) ~]
       ::
           %del
         =/  =path  /(scot %p host.gid.upd)/[name.gid.upd]
@@ -350,12 +350,10 @@
         =/  new-display=manx
           (rig:mast routes cur-url [bol hut-component huts msg-jar joined])
         :_  this(display new-display)
-        :+  (kick:io path ~)
+        :^    (gust:mast /display-updates display new-display)
+            (kick:io path ~)
           (fact:io hut-did+!>(`hut-upd`[%quit gid.upd our.bol]) /all ~)
-        ?.  =(our.bol host.gid.upd)
-          :-  [(~(leave-path pass:io path) [host.gid.upd %tally] path)]
-          (gust:mast /display-updates display new-display)
-        (gust:mast /display-updates display new-display)
+        ?.(=(our.bol host.gid.upd) [[(~(leave-path pass:io path) [host.gid.upd %tally] path)] ~] ~)
       ::
           %kick
         =/  =path  /(scot %p host.gid.upd)/[name.gid.upd]
