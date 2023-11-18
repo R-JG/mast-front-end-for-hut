@@ -21,7 +21,7 @@
     io    ~(. agentio bol)
     hc    ~(. +> bol)
     routes  %-  limo
-      :~  ['/hut' index]
+      :~  [/hut index]
       ==
 ++  on-init
   ^-  (quip card _this)
@@ -59,17 +59,18 @@
       [(make-auth-redirect:mast eyre-id) state]
     ?+  method.request.req  [(make-400:mast eyre-id) state]
       %'GET'
-        ?:  =('/hut/style' url.request.req)
+        =/  url=path  (stab url.request.req)
+        ?:  =(/hut/style url)
           [(make-css-response:mast eyre-id style) state]
-        =/  new-display  (rig:mast routes url.request.req [bol hut-component huts msg-jar joined])
-        :-  (plank:mast eyre-id our.bol "hut" "/display-updates" new-display)
-        state(display new-display, cur-url url.request.req)
+        =/  new-display  (rig:mast routes url [bol hut-component huts msg-jar joined])
+        :-  (plank:mast "hut" /display-updates our.bol eyre-id new-display)
+        state(display new-display, cur-url url)
     ==
   ::
   ++  handle-client-poke
     |=  json-req=json
     ^-  (quip card _state)
-    =/  client-poke  (parse:mast json-req)
+    =/  client-poke  (parse-json:mast json-req)
     ?~  tags.client-poke  !!
     ?~  t.tags.client-poke  !!
     ?+  [i.tags.client-poke i.t.tags.client-poke]  !!

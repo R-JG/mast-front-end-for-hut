@@ -21,7 +21,7 @@
       [%init-all =huts =msg-jar =joined]
       hut-act
   ==
-+$  cur-url  @t
++$  cur-url  path
 +$  display  $~([[%html ~] [[%head ~] ~] [[%body ~] ~] ~] manx)
 +$  cur-gid  ?(gid ~)
 +$  cur-hut  ?(hut ~)
